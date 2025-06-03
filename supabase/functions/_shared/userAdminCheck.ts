@@ -7,6 +7,6 @@ export default async function AdminCheck (supabaseClient,req){
         data: { user },
         error: userError,
     } = await supabaseClient.auth.getUser(token);
-    const {data,error} = await supabaseClient.from("Profiles").select("role").eq("id", user.id).single()
+    const {data,error} = await supabaseClient.from("profiles").select("role").eq("id", user.id).single()
     return data.role == "admin";
 }
