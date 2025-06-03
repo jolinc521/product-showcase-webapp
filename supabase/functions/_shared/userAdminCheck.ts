@@ -1,4 +1,5 @@
 import "jsr:@supabase/functions-js/edge-runtime.d.ts"
+
 export default async function AdminCheck (supabaseClient,req){
     // Retrieve calling user's auth and role for checking
     const token = req.headers.get("Authorization")?.replace("Bearer ", "");
