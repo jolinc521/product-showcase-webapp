@@ -3,6 +3,7 @@ import {corsHeaders} from "../_shared/cors.ts";
 import SupabaseClient from "../_shared/supabaseClient.ts";
 import AdminCheck from "../_shared/userAdminCheck.ts";
 
+
 Deno.serve(async (req) => {
   if (req.method === 'OPTIONS') {
     return new Response('ok', { headers: corsHeaders })
@@ -31,19 +32,15 @@ Deno.serve(async (req) => {
     }
 
     const body = await req.json();
-
-    // Fetch the product data
-    const productData = {
-      title: body.title || '',
-      description: body.description || '',
-      price: body.price || 0,
-      image_url: '',
+    if (!body.product_id) {
+      return new Response(null, {status: 400, headers: {...corsHeaders, 'Content-Type': 'application/json'}});
     }
 
+    // Fetch the profile data
     const { data, error } = await supabaseClient
       .from('products')
-      .insert([productData])
-      .select()
+      .delete()
+      .eq('id', body.product_id)
 
     if (error) {
       console.error(error)
@@ -51,8 +48,8 @@ Deno.serve(async (req) => {
     }
 
     return new Response(
-      null,
-      { headers: { "Content-Type": "application/json" }, status: 201 },
+      JSON.stringify(data),
+      { headers: { "Content-Type": "application/json" }, status: 200 },
     )
 
   }catch (error) {
@@ -63,7 +60,7 @@ Deno.serve(async (req) => {
         ...corsHeaders,
         'Content-Type': 'application/json'
       },
-      status: 500
+      status: error.code
     });
   }
 })
