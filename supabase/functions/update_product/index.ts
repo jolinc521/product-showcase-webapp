@@ -1,7 +1,7 @@
 import "jsr:@supabase/functions-js/edge-runtime.d.ts"
 import {corsHeaders} from "../_shared/cors.ts";
 import SupabaseClient from "../_shared/supabaseClient.ts";
-
+import AdminCheck from "../_shared/userAdminCheck.ts";
 
 Deno.serve(async (req) => {
   if (req.method === 'OPTIONS') {
@@ -10,6 +10,14 @@ Deno.serve(async (req) => {
   
   try{
     const supabaseClient = SupabaseClient(req)
+    const authorized = await AdminCheck(supabaseClient, req);
+    if (!authorized) {
+      return new Response(JSON.stringify({
+        error: 'Unauthorized'
+      }), {
+        status: 401, headers:{...corsHeaders}
+      });
+    }
 
     // Retrieve calling user's auth and role for checking
     const token = req.headers.get('Authorization')?.replace('Bearer ', '');
@@ -23,12 +31,15 @@ Deno.serve(async (req) => {
     }
 
     const body = await req.json();
+    if(!body || !body.id) {
+      return new Response(null, {status: 400, headers: {...corsHeaders, 'Content-Type': 'application/json'}});
+    }
 
     const { data, error } = await supabaseClient
-      .from('profiles')
+      .from('products')
       .update(body)
-      .eq('id', user.id)
-      .select();
+      .eq('id', body.id)
+      .select()
 
     if (error) {
       console.error(error)
@@ -52,4 +63,3 @@ Deno.serve(async (req) => {
     });
   }
 })
-
