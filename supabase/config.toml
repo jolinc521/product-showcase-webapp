@@ -405,3 +405,58 @@ entrypoint = "./functions/get_all_products/index.ts"
 # Specifies static files to be bundled with the function. Supports glob patterns.
 # For example, if you want to serve static HTML pages in your function:
 # static_files = [ "./functions/get_all_products/*.html" ]
+
+[functions.add_to_cart]
+enabled = true
+verify_jwt = true
+import_map = "./functions/add_to_cart/deno.json"
+# Uncomment to specify a custom file path to the entrypoint.
+# Supported file extensions are: .ts, .js, .mjs, .jsx, .tsx
+entrypoint = "./functions/add_to_cart/index.ts"
+# Specifies static files to be bundled with the function. Supports glob patterns.
+# For example, if you want to serve static HTML pages in your function:
+# static_files = [ "./functions/add_to_cart/*.html" ]
+
+[functions.get_cart]
+enabled = true
+verify_jwt = true
+import_map = "./functions/get_cart/deno.json"
+# Uncomment to specify a custom file path to the entrypoint.
+# Supported file extensions are: .ts, .js, .mjs, .jsx, .tsx
+entrypoint = "./functions/get_cart/index.ts"
+# Specifies static files to be bundled with the function. Supports glob patterns.
+# For example, if you want to serve static HTML pages in your function:
+# static_files = [ "./functions/get_cart/*.html" ]
+
+[functions.update_cart]
+enabled = true
+verify_jwt = true
+import_map = "./functions/update_cart/deno.json"
+# Uncomment to specify a custom file path to the entrypoint.
+# Supported file extensions are: .ts, .js, .mjs, .jsx, .tsx
+entrypoint = "./functions/update_cart/index.ts"
+# Specifies static files to be bundled with the function. Supports glob patterns.
+# For example, if you want to serve static HTML pages in your function:
+# static_files = [ "./functions/update_cart/*.html" ]
+
+[functions.remove_cart_item]
+enabled = true
+verify_jwt = true
+import_map = "./functions/remove_cart_item/deno.json"
+# Uncomment to specify a custom file path to the entrypoint.
+# Supported file extensions are: .ts, .js, .mjs, .jsx, .tsx
+entrypoint = "./functions/remove_cart_item/index.ts"
+# Specifies static files to be bundled with the function. Supports glob patterns.
+# For example, if you want to serve static HTML pages in your function:
+# static_files = [ "./functions/remove_cart_item/*.html" ]
+
+[functions.clear_cart]
+enabled = true
+verify_jwt = true
+import_map = "./functions/clear_cart/deno.json"
+# Uncomment to specify a custom file path to the entrypoint.
+# Supported file extensions are: .ts, .js, .mjs, .jsx, .tsx
+entrypoint = "./functions/clear_cart/index.ts"
+# Specifies static files to be bundled with the function. Supports glob patterns.
+# For example, if you want to serve static HTML pages in your function:
+# static_files = [ "./functions/clear_cart/*.html" ]
