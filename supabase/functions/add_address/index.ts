@@ -41,7 +41,31 @@ Deno.serve(async (req) => {
       country: body.country || "",
     };
 
-    const { data, error } = await supabaseClient
+    // Check if the user already has an address
+    const { data: existingAddress, error: existingError } = await supabaseClient
+      .from("address")
+      .select("*")
+      .eq("user_id", user.id)
+      .single();
+
+    if (existingError && existingError.code !== "PGRST116") {
+      console.error(existingError);
+      throw existingError;
+    }
+
+    // If an address exists, delete it before inserting the new one
+    const { data: deleteAddress, error: deleteError } = await supabaseClient
+      .from("address")
+      .delete()
+      .eq("user_id", user.id);
+
+    if (deleteError) {
+      console.error(deleteError);
+      throw deleteError;
+    }
+
+    // Insert the new address
+    const { data: insertAddress, error } = await supabaseClient
       .from("address")
       .insert([addrData])
       .select();
